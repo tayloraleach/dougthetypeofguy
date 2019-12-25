@@ -24,20 +24,28 @@ const Layout = ({ children }) => {
   `)
 
   return (
-    <>
+    <div
+      style={{
+        fontFamily: "sans-serif",
+        position: "absolute",
+        top: 100,
+        right: 0,
+        left: 0,
+        margin: `0 auto`,
+        maxWidth: 960,
+        padding: 15,
+        fontWeight: "bold",
+        letterSpacing: 0.2,
+        lineHeight: 1.4,
+      }}
+    >
       <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0px 1.0875rem 1.45rem`,
-          paddingTop: 0,
-        }}
-      >
-        <main>{children}</main>
-        <footer>Doug the type of guy to have a website footer.</footer>
-      </div>
-    </>
+
+      <main>{children}</main>
+      <footer style={{ backgroundColor: "white" }}>
+        Doug the type of guy to have a website footer.
+      </footer>
+    </div>
   )
 }
 

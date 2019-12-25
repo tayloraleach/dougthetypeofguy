@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import { array } from "prop-types"
+import Image from "../components/image"
 
 const DOUGS_CHANNEL_ID = "UCsqjHFMB_JYTaEnf_vmTNqg"
 
@@ -67,14 +67,29 @@ export default class IndexPage extends Component {
 
   render() {
     return (
-      <Layout>
-        <SEO title="Home" />
-        <ul style={{ maxWidth: `500px`, margin: "0 auto", padding: 15 }}>
-          {this.state.comments.map(comment => (
-            <li key={comment}>{comment}</li>
-          ))}
-        </ul>
-      </Layout>
+      <>
+        <div
+          style={{
+            opacity: 0.35,
+            position: "fixed",
+            left: 0,
+            bottom: 0,
+            top: 80,
+            width: "100%",
+            height: "auto",
+          }}
+        >
+          <Image />
+        </div>
+        <Layout>
+          <SEO title="Home" />
+          <ul style={{ maxWidth: `960px`, margin: "0 auto", padding: 15 }}>
+            {this.state.comments.map(comment => (
+              <li key={comment}>{comment}</li>
+            ))}
+          </ul>
+        </Layout>
+      </>
     )
   }
 }
