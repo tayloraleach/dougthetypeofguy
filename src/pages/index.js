@@ -51,12 +51,14 @@ export default class IndexPage extends Component {
       })
       this.setState({ comments: arr })
       localStorage.setItem("comments", JSON.stringify(arr))
+      localStorage.setItem("date", new Date().getDay())
     })
   }
 
   async componentDidMount() {
     const comments = localStorage.getItem("comments")
-    if (!comments) {
+    const theDate = new Date(localStorage.getItem("date"))
+    if ((theDate && theDate.getDay() === new Date().getDay()) || !comments) {
       await this.load()
     } else {
       this.setState({ comments: JSON.parse(comments) })
