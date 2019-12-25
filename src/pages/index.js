@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import { array } from "prop-types"
 
 const DOUGS_CHANNEL_ID = "UCsqjHFMB_JYTaEnf_vmTNqg"
 
@@ -35,7 +36,7 @@ export default class IndexPage extends Component {
     return await req.json()
   }
 
-  async componentDidMount() {
+  async load() {
     let comments = []
     const channelData = await this.getVideosFromChannelID(DOUGS_CHANNEL_ID)
     const videoReqs = channelData.items.map(async video => {
@@ -43,21 +44,33 @@ export default class IndexPage extends Component {
       comments.push(this.filterComments(data.items))
     })
     Promise.all(videoReqs).then(() => {
-      this.setState({ comments: comments.filter(x => x.length > 1).flat() })
+      const filtered = comments.filter(x => x.length > 1).flat()
+      const arr = []
+      filtered.forEach(x => {
+        arr.push(x.snippet.topLevelComment.snippet.textDisplay)
+      })
+      this.setState({ comments: arr })
+      localStorage.setItem("comments", JSON.stringify(arr))
     })
   }
+
+  async componentDidMount() {
+    const comments = localStorage.getItem("comments")
+    if (!comments) {
+      await this.load()
+    } else {
+      this.setState({ comments: JSON.parse(comments) })
+    }
+  }
+
   render() {
     return (
       <Layout>
         <SEO title="Home" />
-        <ul style={{ maxWidth: `500px`, margin: "0 auto" }}>
-          {this.state.comments.map(comment => {
-            return (
-              <li key={comment.id}>
-                {comment.snippet.topLevelComment.snippet.textDisplay}
-              </li>
-            )
-          })}
+        <ul style={{ maxWidth: `500px`, margin: "0 auto", padding: 15 }}>
+          {this.state.comments.map(comment => (
+            <li key={comment}>{comment}</li>
+          ))}
         </ul>
       </Layout>
     )
